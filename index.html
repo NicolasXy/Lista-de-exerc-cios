@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Estações — Prática 2DSM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">§</span>
+    <div class="brand-text">
+      <span class="brand-title">Painel de Estações</span>
+      <span class="brand-sub">SIS&nbsp;·&nbsp;operações simuladas</span>
+    </div>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="station-nav" id="stationNav">
+    <a href="#ex1" class="station-link"><em>SIS-01</em>Frete</a>
+    <a href="#ex2" class="station-link"><em>SIS-02</em>Folha</a>
+    <a href="#ex3" class="station-link"><em>SIS-03</em>Produção</a>
+    <a href="#ex4" class="station-link"><em>SIS-04</em>Hotel</a>
+    <a href="#ex5" class="station-link"><em>SIS-05</em>Treinos</a>
+    <a href="#ex6" class="station-link"><em>SIS-06</em>Vendas</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero">
+    <p class="hero-eyebrow">Prática 2DSM — HTML · CSS · JavaScript</p>
+    <h1>Seis estações, um mesmo turno.</h1>
+    <p class="hero-lede">Cada estação abaixo simula um sistema real de gestão — frete, folha de pagamento,
+    produção, reservas de hotel, treinos esportivos e vendas — com cadastro em lote, validação de
+    entradas e relatório final calculado em tempo real.</p>
+  </section>
+
+  <!-- ============ EX 1 — FRETE ============ -->
+  <section id="ex1" class="station">
+    <div class="station-head">
+      <span class="tag">SIS-01</span>
+      <h2>Frete com múltiplos pedidos</h2>
+      <p>Metalmecânica calculando frete por região, distância e volume de peças.</p>
+    </div>
+
+    <div class="station-grid">
+      <div class="panel">
+        <h3>Configuração do turno</h3>
+        <div class="field-row">
+          <label for="ex1-litro">Preço do litro de combustível (R$)</label>
+          <input type="number" id="ex1-litro" min="0" step="0.01" placeholder="Ex: 5,89">
+        </div>
+        <button class="btn btn-ghost" id="ex1-config-btn">Aplicar configuração</button>
+        <p class="hint" id="ex1-config-status">Configuração pendente.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Novo pedido</h3>
+        <form id="ex1-form" class="entry-form" autocomplete="off">
+          <div class="field-row">
+            <label for="ex1-codigo">Código do pedido</label>
+            <input type="text" id="ex1-codigo" required placeholder="Ex: PD-001">
+          </div>
+          <div class="field-row">
+            <label for="ex1-regiao">Região</label>
+            <select id="ex1-regiao">
+              <option value="1">Região 1 — Sudeste (R$ 1,20/peça)</option>
+              <option value="2">Região 2 — Sul (R$ 1,30/peça)</option>
+              <option value="3">Região 3 — Centro-Oeste (R$ 1,50/peça)</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="ex1-distancia">Distância (km)</label>
+            <input type="number" id="ex1-distancia" min="0" step="0.1" required>
+          </div>
+          <div class="field-row">
+            <label for="ex1-qtd">Quantidade de peças</label>
+            <input type="number" id="ex1-qtd" min="1" step="1" required>
+          </div>
+          <div class="field-row field-row--checkbox">
+            <label for="ex1-rastreio"><input type="checkbox" id="ex1-rastreio"> Rastreamento (+ R$ 200,00)</label>
+          </div>
+          <button type="submit" class="btn">Adicionar pedido</button>
+          <p class="form-error" id="ex1-error"></p>
+        </form>
+      </div>
+    </div>
+
+    <div class="panel table-panel">
+      <h3>Pedidos lançados</h3>
+      <div class="table-scroll">
+        <table id="ex1-table">
+          <thead><tr><th>Código</th><th>Região</th><th>Distância</th><th>Peças</th><th>Rastreio</th><th>Total</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="empty-msg" id="ex1-empty">Nenhum pedido lançado ainda.</p>
+    </div>
+
+    <div class="panel report-panel">
+      <div class="report-head">
+        <h3>Relatório final</h3>
+        <button class="btn btn-accent" id="ex1-report-btn">Gerar relatório</button>
+      </div>
+      <div class="report-body" id="ex1-report"></div>
+    </div>
+  </section>
+
+  <!-- ============ EX 2 — FOLHA DE PAGAMENTO ============ -->
+  <section id="ex2" class="station">
+    <div class="station-head">
+      <span class="tag">SIS-02</span>
+      <h2>Folha de pagamento com bônus</h2>
+      <p>Rede hoteleira calculando salários por categoria, turno e desempenho.</p>
+    </div>
+
+    <div class="station-grid">
+      <div class="panel">
+        <h3>Configuração do turno</h3>
+        <div class="field-row">
+          <label for="ex2-salmin">Salário mínimo vigente (R$)</label>
+          <input type="number" id="ex2-salmin" min="0" step="0.01" placeholder="Ex: 1518,00">
+        </div>
+        <button class="btn btn-ghost" id="ex2-config-btn">Aplicar configuração</button>
+        <p class="hint" id="ex2-config-status">Configuração pendente.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Novo funcionário</h3>
+        <form id="ex2-form" class="entry-form" autocomplete="off">
+          <div class="field-row">
+            <label for="ex2-codigo">Código do funcionário</label>
+            <input type="text" id="ex2-codigo" required placeholder="Ex: FUNC-01">
+          </div>
+          <div class="field-row">
+            <label for="ex2-horas">Horas trabalhadas no mês</label>
+            <input type="number" id="ex2-horas" min="0" step="1" required>
+          </div>
+          <div class="field-row">
+            <label for="ex2-categoria">Categoria</label>
+            <select id="ex2-categoria">
+              <option value="F">Operacional (F)</option>
+              <option value="G">Gerente (G)</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="ex2-turno">Turno</label>
+            <select id="ex2-turno">
+              <option value="M">Matutino (M)</option>
+              <option value="V">Vespertino (V)</option>
+              <option value="N">Noturno (N)</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="ex2-nota">Avaliação de desempenho (0 a 10)</label>
+            <input type="number" id="ex2-nota" min="0" max="10" step="0.1" required>
+          </div>
+          <button type="submit" class="btn">Adicionar funcionário</button>
+          <p class="form-error" id="ex2-error"></p>
+        </form>
+      </div>
+    </div>
+
+    <div class="panel table-panel">
+      <h3>Funcionários cadastrados</h3>
+      <div class="table-scroll">
+        <table id="ex2-table">
+          <thead><tr><th>Código</th><th>Categoria</th><th>Turno</th><th>Nota</th><th>Salário inicial</th><th>Salário final</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="empty-msg" id="ex2-empty">Nenhum funcionário cadastrado ainda.</p>
+    </div>
+
+    <div class="panel report-panel">
+      <div class="report-head">
+        <h3>Relatório final</h3>
+        <button class="btn btn-accent" id="ex2-report-btn">Gerar relatório</button>
+      </div>
+      <div class="report-body" id="ex2-report"></div>
+    </div>
+  </section>
+
+  <!-- ============ EX 3 — PRODUÇÃO ============ -->
+  <section id="ex3" class="station">
+    <div class="station-head">
+      <span class="tag">SIS-03</span>
+      <h2>Controle de produção e estoque</h2>
+      <p>Indústria automotiva monitorando ordens de produção e níveis de estoque.</p>
+    </div>
+
+    <div class="station-grid station-grid--single">
+      <div class="panel">
+        <h3>Nova ordem de produção</h3>
+        <form id="ex3-form" class="entry-form" autocomplete="off">
+          <div class="field-row">
+            <label for="ex3-codigo">Código da ordem</label>
+            <input type="text" id="ex3-codigo" required placeholder="Ex: OP-001">
+          </div>
+          <div class="field-row">
+            <label for="ex3-produto">Código do produto</label>
+            <input type="text" id="ex3-produto" required placeholder="Ex: PRD-10">
+          </div>
+          <div class="field-row">
+            <label for="ex3-tipo">Tipo de produto</label>
+            <select id="ex3-tipo">
+              <option value="1">1 — Padrão</option>
+              <option value="2">2 — Premium (+10% custo)</option>
+              <option value="3">3 — Sob encomenda (+20% custo)</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="ex3-qtdprod">Quantidade produzida</label>
+            <input type="number" id="ex3-qtdprod" min="1" step="1" required>
+          </div>
+          <div class="field-row">
+            <label for="ex3-custo">Custo unitário base (R$)</label>
+            <input type="number" id="ex3-custo" min="0" step="0.01" required>
+          </div>
+          <div class="field-row">
+            <label for="ex3-estinicial">Estoque inicial do produto</label>
+            <input type="number" id="ex3-estinicial" min="0" step="1" required>
+          </div>
+          <button type="submit" class="btn">Adicionar ordem</button>
+          <p class="form-error" id="ex3-error"></p>
+        </form>
+      </div>
+    </div>
+
+    <div class="panel table-panel">
+      <h3>Ordens registradas</h3>
+      <div class="table-scroll">
+        <table id="ex3-table">
+          <thead><tr><th>Ordem</th><th>Produto</th><th>Tipo</th><th>Estoque final</th><th>Alerta</th><th>Custo total</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="empty-msg" id="ex3-empty">Nenhuma ordem registrada ainda.</p>
+    </div>
+
+    <div class="panel report-panel">
+      <div class="report-head">
+        <h3>Relatório final</h3>
+        <button class="btn btn-accent" id="ex3-report-btn">Gerar relatório</button>
+      </div>
+      <div class="report-body" id="ex3-report"></div>
+    </div>
+  </section>
+
+  <!-- ============ EX 4 — HOTEL ============ -->
+  <section id="ex4" class="station">
+    <div class="station-head">
+      <span class="tag">SIS-04</span>
+      <h2>Reservas de hotel com tarifa dinâmica</h2>
+      <p>Rede hoteleira calculando diárias por tipo de quarto e temporada.</p>
+    </div>
+
+    <div class="station-grid">
+      <div class="panel">
+        <h3>Configuração do turno</h3>
+        <div class="field-row">
+          <label for="ex4-diaria">Valor base da diária padrão (R$)</label>
+          <input type="number" id="ex4-diaria" min="0" step="0.01" placeholder="Ex: 250,00">
+        </div>
+        <div class="field-row">
+          <label for="ex4-cafe">Café da manhã por hóspede/dia (R$)</label>
+          <input type="number" id="ex4-cafe" min="0" step="0.01" placeholder="Ex: 35,00">
+        </div>
+        <button class="btn btn-ghost" id="ex4-config-btn">Aplicar configuração</button>
+        <p class="hint" id="ex4-config-status">Configuração pendente.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Nova reserva</h3>
+        <form id="ex4-form" class="entry-form" autocomplete="off">
+          <div class="field-row">
+            <label for="ex4-codigo">Código da reserva</label>
+            <input type="text" id="ex4-codigo" required placeholder="Ex: RES-01">
+          </div>
+          <div class="field-row">
+            <label for="ex4-tipo">Tipo de quarto</label>
+            <select id="ex4-tipo">
+              <option value="S">Standard (100%)</option>
+              <option value="L">Luxo (150%)</option>
+              <option value="P">Premium (200%)</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="ex4-temporada">Temporada</label>
+            <select id="ex4-temporada">
+              <option value="B">Baixa</option>
+              <option value="A">Alta (+25%)</option>
+              <option value="F">Feriado (+40%)</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="ex4-diarias">Quantidade de diárias</label>
+            <input type="number" id="ex4-diarias" min="1" step="1" required>
+          </div>
+          <div class="field-row">
+            <label for="ex4-hospedes">Número de hóspedes</label>
+            <input type="number" id="ex4-hospedes" min="1" step="1" required>
+          </div>
+          <div class="field-row field-row--checkbox">
+            <label for="ex4-incluicafe"><input type="checkbox" id="ex4-incluicafe"> Café da manhã incluso</label>
+          </div>
+          <button type="submit" class="btn">Adicionar reserva</button>
+          <p class="form-error" id="ex4-error"></p>
+        </form>
+      </div>
+    </div>
+
+    <div class="panel table-panel">
+      <h3>Reservas lançadas</h3>
+      <div class="table-scroll">
+        <table id="ex4-table">
+          <thead><tr><th>Código</th><th>Tipo</th><th>Temporada</th><th>Diárias</th><th>Hóspedes</th><th>Total</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="empty-msg" id="ex4-empty">Nenhuma reserva lançada ainda.</p>
+    </div>
+
+    <div class="panel report-panel">
+      <div class="report-head">
+        <h3>Relatório final</h3>
+        <button class="btn btn-accent" id="ex4-report-btn">Gerar relatório</button>
+      </div>
+      <div class="report-body" id="ex4-report"></div>
+    </div>
+  </section>
+
+  <!-- ============ EX 5 — TREINOS ============ -->
+  <section id="ex5" class="station">
+    <div class="station-head">
+      <span class="tag">SIS-05</span>
+      <h2>Treinos esportivos e risco de lesão</h2>
+      <p>Clube de futebol monitorando carga semanal de treino por atleta.</p>
+    </div>
+
+    <div class="station-grid">
+      <div class="panel">
+        <h3>Configuração do turno</h3>
+        <div class="field-row">
+          <label for="ex5-cargamax">Carga máxima semanal recomendada</label>
+          <input type="number" id="ex5-cargamax" min="0" step="0.1" placeholder="Ex: 40">
+        </div>
+        <button class="btn btn-ghost" id="ex5-config-btn">Aplicar configuração</button>
+        <p class="hint" id="ex5-config-status">Configuração pendente.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Novo treino</h3>
+        <form id="ex5-form" class="entry-form" autocomplete="off">
+          <div class="field-row">
+            <label for="ex5-codigo">Código do treino</label>
+            <input type="text" id="ex5-codigo" required placeholder="Ex: TR-001">
+          </div>
+          <div class="field-row">
+            <label for="ex5-jogador">Nome do jogador</label>
+            <input type="text" id="ex5-jogador" required placeholder="Ex: Rafael Silva">
+          </div>
+          <div class="field-row">
+            <label for="ex5-posicao">Posição</label>
+            <select id="ex5-posicao">
+              <option value="G">Goleiro</option>
+              <option value="Z">Zagueiro</option>
+              <option value="M">Meio-campo</option>
+              <option value="A">Atacante</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="ex5-tipo">Tipo de treino</label>
+            <select id="ex5-tipo">
+              <option value="F">Físico (×1.5)</option>
+              <option value="T">Técnico (×1.2)</option>
+              <option value="E">Estratégico (×1.0)</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="ex5-duracao">Duração (minutos)</label>
+            <input type="number" id="ex5-duracao" min="1" step="1" required>
+          </div>
+          <div class="field-row">
+            <label for="ex5-intensidade">Intensidade (1 a 10)</label>
+            <input type="number" id="ex5-intensidade" min="1" max="10" step="1" required>
+          </div>
+          <button type="submit" class="btn">Adicionar treino</button>
+          <p class="form-error" id="ex5-error"></p>
+        </form>
+      </div>
+    </div>
+
+    <div class="panel table-panel">
+      <h3>Treinos registrados</h3>
+      <div class="table-scroll">
+        <table id="ex5-table">
+          <thead><tr><th>Treino</th><th>Jogador</th><th>Posição</th><th>Tipo</th><th>Carga</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="empty-msg" id="ex5-empty">Nenhum treino registrado ainda.</p>
+    </div>
+
+    <div class="panel report-panel">
+      <div class="report-head">
+        <h3>Relatório final</h3>
+        <button class="btn btn-accent" id="ex5-report-btn">Gerar relatório</button>
+      </div>
+      <div class="report-body" id="ex5-report"></div>
+    </div>
+  </section>
+
+  <!-- ============ EX 6 — VENDAS ============ -->
+  <section id="ex6" class="station">
+    <div class="station-head">
+      <span class="tag">SIS-06</span>
+      <h2>Vendas, comissões e metas</h2>
+      <p>Rede de lojas apurando comissões por vendedor, região e tipo de cliente.</p>
+    </div>
+
+    <div class="station-grid">
+      <div class="panel">
+        <h3>Configuração do turno</h3>
+        <div class="field-row">
+          <label for="ex6-meta">Meta mensal por vendedor (R$)</label>
+          <input type="number" id="ex6-meta" min="0" step="0.01" placeholder="Ex: 20000,00">
+        </div>
+        <div class="field-row">
+          <label for="ex6-percbase">Percentual base de comissão (%)</label>
+          <input type="number" id="ex6-percbase" min="0" step="0.1" placeholder="Ex: 5">
+        </div>
+        <button class="btn btn-ghost" id="ex6-config-btn">Aplicar configuração</button>
+        <p class="hint" id="ex6-config-status">Configuração pendente.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Nova venda</h3>
+        <form id="ex6-form" class="entry-form" autocomplete="off">
+          <div class="field-row">
+            <label for="ex6-codigo">Código da venda</label>
+            <input type="text" id="ex6-codigo" required placeholder="Ex: VD-001">
+          </div>
+          <div class="field-row">
+            <label for="ex6-vendedor">Código do vendedor</label>
+            <input type="text" id="ex6-vendedor" required placeholder="Ex: VEND-01">
+          </div>
+          <div class="field-row">
+            <label for="ex6-regiao">Região da loja</label>
+            <select id="ex6-regiao">
+              <option value="1">1 — Norte</option>
+              <option value="2">2 — Nordeste</option>
+              <option value="3">3 — Sudeste</option>
+              <option value="4">4 — Sul</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="ex6-valor">Valor da venda (R$)</label>
+            <input type="number" id="ex6-valor" min="0" step="0.01" required>
+          </div>
+          <div class="field-row">
+            <label for="ex6-cliente">Tipo de cliente</label>
+            <select id="ex6-cliente">
+              <option value="PF">Pessoa Física (+2%)</option>
+              <option value="PJ">Pessoa Jurídica (+3%)</option>
+            </select>
+          </div>
+          <button type="submit" class="btn">Adicionar venda</button>
+          <p class="form-error" id="ex6-error"></p>
+        </form>
+      </div>
+    </div>
+
+    <div class="panel table-panel">
+      <h3>Vendas registradas</h3>
+      <div class="table-scroll">
+        <table id="ex6-table">
+          <thead><tr><th>Venda</th><th>Vendedor</th><th>Região</th><th>Cliente</th><th>Valor</th><th>Comissão</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="empty-msg" id="ex6-empty">Nenhuma venda registrada ainda.</p>
+    </div>
+
+    <div class="panel report-panel">
+      <div class="report-head">
+        <h3>Relatório final</h3>
+        <button class="btn btn-accent" id="ex6-report-btn">Gerar relatório</button>
+      </div>
+      <div class="report-body" id="ex6-report"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>Prática 2DSM — HTML, CSS e JavaScript aplicados a seis sistemas de gestão simulados.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
